@@ -1,0 +1,959 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link type="text/css" rel="stylesheet" href="../css/h_skin1/common.css?2018012022" />
+    <link rel="stylesheet" type="text/css" href="css/newreset.css?2018012022" />
+    <link rel="stylesheet" type="text/css" href="css/newstyle.css?2018012022" />
+    <link type="text/css" rel="stylesheet" href="../css/h_skin1/dialog.css?2018012022" />
+    <link href="css/footer.css" rel="stylesheet" type="text/css" />
+    <link href="../css/time.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/scrollDiv.js"></script>
+    <script type="text/javascript" src="../js/dialog.js?2015111303"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="../js/getElementPos.js"></script>
+    <script type="text/javascript" src="/js/jquery.include.js"></script>
+    <script type="text/javascript" src="/js/jquery.zclip.min.js"></script>
+    <style type="text/css">
+        .menul2, .menul3
+        {
+            display: none;
+        }
+        .all_table
+        {
+            width: 99%;
+            margin: 0 auto;
+        }
+        .td_right
+        {
+            width: 100%;
+            padding: 12px 12px 10px 10px;
+        }
+        #ifrpage
+        {
+            min-height: 365px !important;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function autoResize(iframe) {
+            try {
+                if (iframe) {
+                    $(iframe).height($(window.frames["ifrpage"].document.body).height() + 30);
+                }
+            } catch (e) {
+            }
+        }
+        //页面缓存后，同步获取更新信息
+        function getDataInFirst() {
+            var href = document.location.href;
+            var herfUrl = "";
+            if (href.indexOf('#') > 0) {
+                var arrayrl = href.split('#');
+                if ($.trim(arrayrl[1].length) > 0) {
+                    herfUrl = $("a[name=" + arrayrl[1] + "]").attr("href");
+                }
+            }
+
+            if (typeof (herfUrl) === "undefined") {
+                herfUrl = "";
+            }
+
+            $.ajax({
+                url: "../webnew/Customer/CustomerProcess/SystemConfigProcess.aspx?" + Math.random(),
+                type: "post",
+                data: 'Method=GetDataInCache&First=1&ifrpageUrl=' + herfUrl,
+                async: false,
+                dataType: "json",
+                success: function (result) {
+                    if (result) {
+                        eval(result.IfrPage);
+                        if (result.EvalMsg && result.EvalMsg != '') {
+                            eval(result.EvalMsg);
+                        }
+                        $('.public_top_menu_ctn_bg').html(result.KeFuHTML);
+                    }
+                    excuteData(result);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                },
+                cache: false
+            });
+        }
+        //异步获取更新信息
+        function getDataInCache() {
+
+            $.post('../webnew/Customer/CustomerProcess/SystemConfigProcess.aspx?' + Math.random(), { 'Method': 'GetDataInCache' }, excuteData, 'json');
+        }
+        //处理获取到的数据
+        function excuteData(result) {
+            if (!result || typeof result.Status == "object") {
+                if (result.Data != null && result.Data.LocationUrl != null) {
+                    window.top.location.href = "../" + result.Data.LocationUrl;
+                } else {
+                    window.top.location.href = '../LoginExpired.aspx?r=0';
+                }
+                return;
+            }
+            if (result.IsTenVersion == '1') {
+                window.top.location.href = '../webnew/SysIndex.aspx';
+                return;
+            }
+            if (result.Status == 1) {
+                if (result.LoginType == 2) {
+                    $('#li1').show();
+                } else {
+                    $('#li1').hide();
+                }
+                for (var d in result.Data) {
+
+                    if (d == 'messageNum') {
+                        $('#' + d).css('background', '#' + (result.Data[d] > 0 ? 'fe6600' : 'c3c3c3'));
+                        $('.messageImg').css('display', result.Data[d] > 0 ? 'inline-block' : 'none');
+                        $('#msgBox1').css('display', result.Data[d] > 0 ? 'block' : 'none');
+                        $('#msgBox2').css('display', result.Data[d] > 0 ? 'none' : 'block');
+                    }
+                    if (d == 'AgentSiteName') {
+                        document.title = result.Data[d];
+                    } else if (d == 'HasScore' && result.Data[d] == '1') {
+                        $('#li2').show();
+                    } else if (d == 'AgentLogo') {
+                        $('#' + d).attr('src', '' + result.Data[d] + '');
+                    } else if (d == 'msgTxt' || d == 'CustomerID') {
+                        $('#' + d).html(result.Data[d]);
+                    } else if (d == 'ParentCustomer') {
+                        if ($.trim(result.Data[d]) == '') {
+                            $('#lparent').hide();
+                            $('#' + d).html("无");
+                        } else {
+                            $('#lparent').show();
+                            $('#' + d).text(result.Data[d]);
+                        }
+                    } else {
+                        //console.log(d + "====" + result.Data[d]);
+                        $('#' + d).text(result.Data[d]);
+                    }
+                }
+            }
+        }
+        //退出
+        function exitLogin() {
+            $.get('../webnew/Customer/CustomerProcess/SystemConfigProcess.aspx?Method=GetExitUrl', function (result) {
+                window.top.location = window.location.protocol + '//' + window.location.host + (result || result == '' ? '/index/Default.aspx' : result);
+            }).error(function () {
+                window.top.location = window.location.protocol + '//' + window.location.hostname + '/Default.aspx';
+            });
+        }
+
+        //操作成功按钮
+        function successBtn() {
+            $(".success_btn").fadeIn();
+            setTimeout(function () { $(".success_btn").fadeOut() }, 2000);
+        }
+
+        //推荐专区
+        function GetProductsByIsMan() {
+            var newsCon = "<dt class=''><a href='../l.aspx' target = 'ifrpage'>推荐专区</a></dt>";
+            $.get('../webnew/Customer/CustomerProcess/SystemConfigProcess.aspx?Method=GetProductsByIsMan', function (res) {
+                if (res.data.length > 0) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        newsCon += "<dd class=''><a href='../l.aspx?PID=" + res.data[i].CategoryID + "' target = 'ifrpage' class=" + GetAreaStyleColor(parseInt(res.data[i].StyleID)) + ">" + res.data[i].RareaName + "</a></dd>";
+                    }
+                    newsCon = " <dl class='tuijian  clearfix'>" + newsCon + "</dl>";
+                    $(".tj").html(newsCon);
+                } else {
+                    newsCon += "<dd class=''><a href='../l.aspx?PID=1' target = 'ifrpage' class='hlw'>推荐类目1</a></dd>";
+                    newsCon += "<dd class=''><a href='../l.aspx?PID=1' target = 'ifrpage' class='qqhy'>推荐类目2</a></dd>";
+                    newsCon += "<dd class=''><a href='../l.aspx?PID=1' target = 'ifrpage' class='qqhz'>推荐类目3</a></dd>";
+                    newsCon += "<dd class=''><a href='../l.aspx?PID=1' target = 'ifrpage' class='qqlz'>推荐类目4</a></dd>";
+                    newsCon += "<dd class=''><a href='../l.aspx?PID=1' target = 'ifrpage' class='qqlvz'>推荐类目5</a></dd>";
+                    newsCon += "<dd class=''><a href='../l.aspx?PID=1' target = 'ifrpage' class='hlw'>推荐类目6</a></dd>";
+                    newsCon = " <dl class='tuijian  clearfix'>" + newsCon + "</dl>";
+                    $(".tj").html(newsCon);
+                }
+            }, 'json').error(function () { });
+        }
+
+
+        //获取推荐专区颜色
+        function GetAreaStyleColor(type) {
+            var color = "";
+            switch (type) {
+                case 1:
+                    color = "hlw";
+                    break;
+                case 2:
+                    color = "qqhy";
+                    break;
+                case 3:
+                    color = "qqhz";
+                    break;
+                case 4:
+                    color = "qqlz";
+                    break;
+                case 5:
+                    color = "qqlvz";
+                    break;
+                default:
+                    break;
+
+            }
+            return color;
+        }
+
+        //滚动新闻
+        function GetSystemConfigRollByName() {
+            var newsCon = "";
+            $.get('../webnew/Customer/CustomerProcess/SystemConfigProcess.aspx?Method=GetSystemConfigRollByName', function (res) {
+                if (res.Status.Code == "success") {
+                    if (res.Data.length == 0) {
+                        $(".top_middle").hide();
+                    } else {
+                        for (var i = 0; i < res.Data.length; i++) {
+                            var str = res.Data[i].ConfigStyle, strs = new Array(), weight, target;
+                            strs = str.split(",");
+                            if (strs[1] == "0") {
+                                weight = "normal";
+                            } else {
+                                weight = "bold";
+                            }
+                            newsCon += "<li  class=\"over\"><a href='/" + res.Data[i].ConfigUrl + "' target='_blank' title='" + res.Data[i].ConfigContent + "' style='color:" + strs[0] + "; font-weight:" + weight + "; font-size:" + strs[2] + "'>" + res.Data[i].ConfigContent + "</a></li>";
+                        }
+                        newsCon = "<ul>" + newsCon + "</ul>";
+                        $(".advBox").html(newsCon);
+                        adv(".advBox", 2000);
+                    }
+                } else {
+                    $(".top_middle").hide();
+                }
+            }, 'json').error(function () { });
+        }
+
+        //消息窗口数据展示
+        function GetMessageUnread() {
+            var messageCon = "<dt>消息框</dt>";
+            $.get('../webnew/Customer/CustomerProcess/MessageProcess.aspx?Method=GetMessageUnread', function (res) {
+                if (res.Status.Code == "success") {
+                    $("#msgBox2").hide();
+                    $("#msgBox1").show();
+                    for (var i = 0; i < res.Message.length; i++) {
+                        var dataTime = res.Message[i].SendedTime;
+                        messageCon += "<dd><a href='javascript:' id='" + res.Message[i].PID + "' onclick='ifrpage.location.href = \"../SeeMessenger.aspx?PID=" + res.Message[i].PID + "\"' ><p class=\"title\">" + res.Message[i].MessageTitle + "</p> <p class=\"time\">" + dataTime + "</p><span class=\"hide\"><img src=\"images/cha.png\" /></span></a></dd>";
+                    }
+                    $("#msgTxt").html(messageCon);
+                } else {
+                    $("#msgBox1").hide();
+                    $("#msgBox2").show();
+                }
+            }, 'json').error(function () { });
+        }
+        //删除消息
+        function DeleteNMessage(PID) {
+            $.get('../webnew/Customer/CustomerProcess/MessageProcess.aspx?Method=DeleteNMessage&PID=' + PID + '&Type=1', function (res) {
+                if (res.Status.Code == "success") {
+                    $.cookie("unreadNum", parseInt($(".messageNum").text()) - 1);
+                    getDataInCache();
+                }
+            }, 'json').error(function () { });
+        }
+        //全部标记已读
+        function readMessage(PID) {
+            $.get('../webnew/Customer/CustomerProcess/MessageProcess.aspx?Method=ReadMessage&PID=' + PID, function (res) {
+                if (res.Status.Code == "success") {
+                    $("#msgBox1").hide();
+                    $("#msgBox2").show();
+                    getDataInCache();
+                }
+            }, 'json').error(function () { });
+        }
+        //获取未读信息个数
+        function getMessageUnreadCount() {
+            $.get('../webnew/Customer/CustomerProcess/MessageProcess.aspx?Method=GetMessageUnreadCount', function (res) {
+                if (res.Status.Code == "success") {
+                    $(".messageNum").text(res.Data[0].MessageCount);
+                    //提示喇叭
+                    if ($(".messageNum").text() == "0" || $(".messageNum").text() == "") {
+                        $(".messageImg").css("display", "none");
+                        $(".messageNum").css("background", "#c3c3c3");
+                        $("#msgBox1").hide();
+                        $("#msgBox2").show();
+                    } else {
+                        $(".messageImg").css("display", "inline-block");
+                        $(".messageNum").css("background", "#fe6600");
+                        GetMessageUnread();
+                        if ($(".messageNum").text() != $.cookie("unreadNum")) {
+                            $.cookie("unreadNum", $(".messageNum").text());
+                            voice();
+                        }
+                    }
+                }
+            }, 'json').error(function () { });
+        }
+        //获取状态提示值
+        function getRemindStatus() {
+            $("#voiceStatus").find("input[type=hidden]").val(1);
+            $("#popupStatus").find("input[type=hidden]").val(1);
+            $("#voiceStatus").find(".switch_tip").text("点击关闭");
+            $("#voiceStatus").css("background-position", "0 0");
+            $("#popupStatus").find(".switch_tip").text("点击关闭");
+            $("#popupStatus").css("background-position", "0 0");
+        }
+        //修改提醒状态值
+        function changeRemindStatus(name, status) {
+            $.get('../webnew/IndexProcess1.aspx?Method=ChangeRemindStatus&StatusName=' + name + "&Status=" + status, function (res) {
+                if (res.Status.Code == "success") {
+                    successBtn()
+                }
+            }, 'json').error(function () { });
+        }
+        function link() {
+            window.frames['ifrpage'].location.href = "../Messenger.aspx";
+        }
+
+        // 广告轮播
+        function adv(obj, s) {
+            var height = $(obj).height();
+            var perH = $(obj).find("li").eq(0).height();
+            var tops; //记录鼠标移入广告时的margintop值
+            timer = setInterval(function () {
+                var top = parseInt($(obj).css("margin-top"));
+                if (Math.abs(parseInt($(obj).css("margin-top"))) >= height - perH) {
+                    $(obj).animate({
+                        "margin-top": 0
+                    });
+                } else {
+                    $(obj).animate({
+                        "margin-top": top - perH
+                    })
+                }
+
+            }, s);
+        };
+
+
+        //文档加载完毕
+        $(document).ready(function () {
+
+            $("#iframeQR").attr({ 'src': '../SponsoredQRcode.aspx?QRcodeType=wdwz&QRcodesrcName=deft' }).prev().show();
+            $("#iframeQR2").attr({ 'src': '../SponsoredQRcode.aspx?QRcodeType=wxh&QRcodesrcName=deft' }).prev().show();
+
+            $("#menul li").on("click", function () {
+                $(this).children('a')[0].click();
+            })
+            //经销商/直销商/供货商系统切换
+            select($(".khbh"));
+
+            var dl = $(".setCusInfo dl");
+            $.each(dl, function (index, domEle) {
+                $(this).find('dd').on("click", function () {
+                    if ($(dl[index - 1]).find('dd').hasClass('on')) {
+                        var lastdd = $(dl[index - 1]).find('dd').last();
+                        $(lastdd[0]).removeClass('on');
+                    }
+                    $(this).addClass('on').siblings('dd').removeClass('on');
+                })
+            })
+
+            //重写URL
+            $('.setCusInfourl a').on("click", function () {
+                var stateObject = {};
+                var title = "";
+                var newUrl = "#" + $(this).attr("name");
+                history.pushState(stateObject, title, newUrl);
+            })
+
+
+            $(window).scroll(function () {
+                var scroll_top = $(document).scrollTop();
+                if (scroll_top != 0) {
+                    $("#go-top").fadeIn();
+                } else {
+                    $("#go-top").fadeOut();
+                }
+            });
+            getDataInFirst();
+            setInterval(getDataInCache, 20000);
+            //置顶、置底
+            $("#go-top").click(function () {
+                $('html,body').animate({ scrollTop: 0 }, 200);
+            });
+            $("#go-down").click(function () {
+                var t = document.body.scrollHeight;
+                $('html,body').animate({ scrollTop: t }, 200);
+            });
+            $('#bannerid a').click(function () {
+                $('#bannerid a.classOn').removeClass('classOn');
+                var itemid = $(this).addClass('classOn').attr('itemid');
+                $('#sysTypeId').attr('value', $(this).attr('sysid'));
+                if (itemid > 0) {
+                    $('#menul li').hide().siblings('#KF,.menul' + itemid).show();
+                    $('#menua' + itemid).show().siblings().hide();
+                }
+                parent.frames['ifrpage'].location.href = (itemid == '4' ? '../OneCardQuery' : (itemid == '3' ? '../SelfProduct/SelfProductList' : (itemid == '2' ? '../Index2' : '../buycard'))) + '.aspx';
+                $('.BoxPart').remove();
+            });
+            $('#lbtnExit').click(exitLogin);
+            GetProductsByIsMan();
+            //GetSystemConfigRollByName(); //滚动新闻
+            $.cookie("unreadNum", $(".messageNum").text());
+            if ($(".messageNum").text() == "0") {
+                $(".messageNum").parent("em").removeClass("on");
+                $("#msgBox1").hide();
+                $("#msgBox2").show();
+
+            }
+            getRemindStatus();
+            if ($(".messageNum").text() != 0) {
+                $(".messageNum").parent("em").addClass("on");
+                $.cookie("unreadNum", $(".messageNum").text());
+            }
+
+
+            //消息展开
+            $(".info .news").hover(function () {
+                var width = $(this).outerWidth();
+                $(this).find("b").css({ "width": width });
+                $(this).find("strong").css({ "width": width });
+                $(this).find(".information").stop(true, true).fadeIn(300);
+            }, function () {
+                $(this).find(".information").stop(true, true).fadeOut(300);
+            });
+
+            //信息列表绑定鼠标事件
+            $("#msgBox dl dd").live("mouseover", function () {
+                $(this).css("background-color", "#f2f2f2");
+                $(this).find(".msg_del").show();
+            });
+            $("#msgBox dl dd").live("mouseout", function () {
+                $(this).css("background-color", "");
+                $(this).find(".msg_del").hide();
+            });
+            //删除按钮
+            $("i.msg_del").live("mouseover", function () {
+                $(this).css("background-position", "0 -11px");
+            });
+            $("i.msg_del").live("mouseout", function () {
+                $(this).css("background-position", "0 0");
+            });
+            $("#msgTxt").delegate("a", "click", function () {
+                $(this).parent().remove();
+                var PID = $(this).attr("id") + ",";
+                $.cookie("unreadNum", parseInt($(".messageNum").text()) - 1);
+                getMessageUnreadCount();
+                if ($("#msgTxt").html() == "") {
+                    $("#msgBox1").hide();
+                    $("#msgBox2").show();
+                }
+            });
+            $("#msgTxt").delegate("i.msg_del", "click", function () {
+                $(this).parent().remove();
+                var PID = $(this).prev("a").attr("id") + ",";
+                DeleteNMessage(PID);
+                if ($("#msgTxt").html() == "") {
+                    $("#msgBox1").hide();
+                    $("#msgBox2").show();
+                }
+            });
+            //全部标记为已读
+            $("#setAll").click(function () {
+                var pidStr = "";
+                $("#msgBox dl dd").each(function () {
+                    pidStr += $(this).find("a").attr("id") + ",";
+                    $(this).remove();
+                });
+                readMessage(pidStr);
+            });
+            //返回消息窗口
+            $("#returnMsg").click(function () {
+                $("#Msg2").hide();
+                $("#Msg1").show();
+            });
+            //设置消息
+            $("#setMsg").click(function () {
+                $("#Msg1").hide();
+                $("#Msg2").show();
+            });
+            //点击退出时删除cookie
+            $("#lbtnExit").click(function () {
+                $.cookie("the_cookie0", null);
+                $.cookie("the_cookie1", null);
+                $.cookie("the_cookie2", null);
+                $.cookie("the_cookie3", null);
+            });
+            $("#jplayer").jPlayer({
+                ready: function () {
+                    $(this).jPlayer("setMedia", {
+                        mp3: "images/h_skin1/music.mp3"
+                    });
+                },
+                swfPath: "js",
+                supplied: "mp3"
+            });
+            if (browser.versions.mobile && (browser.versions.android || browser.versions.iPhone)) {
+                $("#recharge").attr("href", "/m/mRecharge.aspx");
+            } else {
+                $("#recharge").attr("href", "../Recharge/PaymentInterface.aspx");
+            }
+            GetRequest();
+        });
+        var browser = {
+            versions: function () {
+                var u = navigator.userAgent, app = navigator.appVersion;
+                return {
+                    trident: u.indexOf('Trident') > -1, //IE内核 
+                    presto: u.indexOf('Presto') > -1, //opera内核 
+                    webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核 
+                    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核 
+                    mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端 
+                    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器 
+                    iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1 //是否为iPhone或者QQHD浏览器 
+                };
+            } ()
+        }
+
+        //
+        function promoteRegister() {
+            Dialog.alert({
+                title: '注册推广链接',
+                message: '<iframe scrolling="no" frameborder="0" style="margin:0;visibility: inherit; width: 100%; z-index: 1" src="../SponsoredLinks.aspx"></iframe>',
+                width: 545,
+                height: 220,
+                minBtn: false,
+                maxBtn: false,
+                allowRightMenu: true,
+                allowSelect: true,
+                icoCls: '',
+                okTxt: ''
+            });
+        }
+        //账户余额
+        function GetBalance() {
+
+        }
+
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            if (theRequest["id"] == "1") {
+                document.getElementById("A_link").click();
+            }
+        }
+
+        function select(obj) {
+            //控制select框的缩放
+            obj.on("click", function (e) {
+                $(this).find(".option").slideToggle(0);
+                e.stopPropagation();
+            });
+            //选取点击的值
+            obj.find(".option").on("click", "li", function () {
+                var text = $(this).html();
+                obj.find("em").html(text);
+            });
+
+            $("body").click(function () {
+                obj.find(".option").slideUp(0);
+                //return false;
+            });
+        };
+    </script>
+</head>
+<body>
+    <!--common公共头部-->
+    <div class="header clearfix">
+        <div class="r" id="bannerid">
+            <ul class="info clearfix">
+                <li class="l name">欢迎您,<span id="lblUserName"></span><a id="lbtnExit" href="javascript:">[退出]</a></li>
+                <li class="l news" id="bTag"><b></b><strong class="hide"></strong><a target="ifrpage"
+                    href="../Messenger.aspx" class="newsPic">消息<em><span id="messageNum" class="messageNum">0</span></em><i><img
+                        src="images/sanjiao.png" /></i></a>
+                    <div class="information" id="msgBox" style="display: none;">
+                        <h3 id="msgBox2" class="hide">
+                            目前没有消息</h3>
+                        <div id="msgBox1">
+                            <dl id="msgTxt">
+                            </dl>
+                        </div>
+                        <ul class="clearfix message">
+                            <li class="l"><a class="all" href="../Messenger.aspx" target='ifrpage'>查看全部消息</a></li>
+                            <li class="l"><a href="javascript:;" class="biaoji" id="setAll">全部标记位已读</a></li>
+                            <li class="r"><a href="javascript:;" class="settings" id="setMsg">消息设置</a></li>
+                        </ul>
+                    </div>
+                    <div id="Msg2" style="display: none;">
+                        <p>
+                            <a id="returnMsg" href="javascript:">&lt;返回消息窗</a>设置</p>
+                        <div class="set_title">
+                            <em></em>提醒方式设置</div>
+                        <div class="set_con_line">
+                            声音提醒<span class="set_switch" id="voiceStatus"><span class="switch_tip">点击关闭</span><input
+                                type="hidden" value="" /></span></div>
+                        <div class="set_title">
+                            <em></em>接收消息类型设置</div>
+                        <div class="set_con_line">
+                            接收售后回复<span class="set_switch1"><span class="switch_tip">敬请期待</span></span></div>
+                        <div class="set_con_line">
+                            手工订单处理结果<span class="set_switch1"><span class="switch_tip">敬请期待</span></span></div>
+                        <div class="set_con_line">
+                            汇款通知书反馈<span class="set_switch1"><span class="switch_tip">敬请期待</span></span></div>
+                        <p>
+                            &nbsp;</p>
+                    </div>
+                    <div class="success_btn">
+                        设置成功</div>
+                </li>
+                <li class="l account parent"><a href="../AccountDetail.aspx" target='ifrpage'>账户设置</a></li>
+                <li class="l erji parent"><a href="/Contact.aspx" target='_blank'>联系我们</a></li>
+                <li class="l parent last">
+                    <div class="selects l khbh">
+                        <h4>
+                            <em>直销商系统</em><span><img src="../images/sanjiao.png" /></span></h4>
+                        <ol class="option hide">
+                            <li><a class="classOn" itemid="1" sysid="0" href="javascript:">直销商系统</a></li>
+                            <li><a itemid="2" sysid="1" href="javascript:">经销商系统</a></li>
+                            <li><a itemid="3" sysid="3" href="javascript:">供货商系统</a></li>
+                        </ol>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="top clearfix">
+        <table>
+            <tr>
+                <td class="logo">
+                    <h2 class="l">
+                        <a href="Default.aspx" menu="1">
+                            <img id="AgentLogo" /></a></h2>
+                </td>
+                <td class="tj">
+                </td>
+            </tr>
+        </table>
+        <!--右边广告-->
+        
+    </div>
+    <div class="nav">
+        <div class="box setCusInfourl">
+            <ul id="menul">
+                <li class="menul1 l"><a href="../buycard.aspx" target="ifrpage" style="width: 130px"
+                    name="sy">首页</a></li>
+                <li class="li2 menul1"></li>
+                <li class="menul1 l"><a href='../buycard.aspx' target='ifrpage' name="spfl">商品分类</a>
+                </li>
+                <li class="li2 menul1"></li>
+                <li class="menul1 l"><a href="../ProductFavorList.aspx" target="ifrpage" name="wdsc">
+                    我的收藏</a></li>
+                <li class="li2 menul1"></li>
+                <li class="menul1 l"><a href="../BuyCardHistory.aspx" target="ifrpage" name="wddd">我的订单</a></li>
+                <li class="li2 menul1"></li>
+                <li class="menul1 l"><a href="../OnlineService.aspx" target="ifrpage" name="wdsh">我的售后</a></li>
+                <li class="li2 menul1"></li>
+                <li class="menul2 l"><a href="../index2.aspx" target="ifrpage" style="width: 130px"
+                    name="sy">首页</a></li>
+                <li class="li2 menul2"></li>
+                <li class="menul2 l"><a href="../SubCustomerList.aspx" target="ifrpage" name="xjkh">
+                    下级客户</a></li>
+                <li class="li2 menul2"></li>
+                <li class="menul2 l"><a href="../SaleSellHistory.aspx" target="ifrpage" name="xstc">
+                    销售提成</a></li>
+                <li class="li2 menul2"></li>
+                <li class="menul2 l"><a href="../WebSetting.aspx" target="ifrpage" name="vipwzgl">VIP网站管理</a></li>
+                <li class="li2 menul2"></li>
+                <li class="menul3 l"><a href="../SelfProduct/SelfProductList.aspx" target="ifrpage"
+                    name="sy">首页</a></li>
+                <li class="li2 menul3"></li>
+                <li class="menul3 l"><a href="../SelfProduct/SelfProductList.aspx" target="ifrpage"
+                    name="spgl">商品管理</a></li>
+                <li class="li2 menul3"></li>
+                <li class="menul3 l"><a href="../SelfProduct/CustomerIncome.aspx" target="ifrpage"
+                    name="tczye">提成转余额</a></li>
+                <li class="li2 menul3"></li>
+                <li class="menul3 l"><a href="../SelfProduct/SelfProductSaleReport.aspx" target="ifrpage"
+                    name="ghmx">供货明细</a></li>
+                <li class="li2 menul3"></li>
+                <li class="menul3 l"><a href="../SelfProduct/SelfSaleInMoney.aspx" target="ifrpage"
+                    name="rzmx">入账明细</a></li>
+                <li class="li2 menul3"></li>
+                <li id="KF" class="kefu" onclick="ShowKeFu()" onmouseover="this.className='kefu1';"
+                    onmouseout="this.className='kefu';"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <table cellpadding="0" cellspacing="0" class="all_table">
+            <tr>
+                <td style="width: 10%">
+                    <!--左边区域-->
+                    <div class="container clearfix">
+                        <div class="lBox l">
+                            <!--买家中心-->
+                            <div class="customerCenter">
+                                <h2>
+                                    账户</h2>
+                                <ul>
+                                    <li><span>编号</span>&nbsp;:<em><span id="CustomerID"></span></em></li>
+                                    <li><span>级别</span>&nbsp;:<em><span id="Level"></span></em><a href="javascript:parent.Dialog.win({title:'升级客户级别',iframe:{src:'../UpgradeLevel.aspx'},width:600,height:200});" id="a2" target="ifrpage"><i></i></a></li>
+                                    <li><span>余额</span>&nbsp;:<em class="hot"><span class="yue" id="Balance"></span></em>元<a
+                                        href="javascript:;" class="customerCentersx" onclick="getDataInCache()"></a></li>
+                                    <li><span>上级</span>&nbsp;:<em><span id="ParentCustomer"></span></em></li>
+                                </ul>
+                                <h3>
+                                    <a href="#" class="pay1" target="_blank" id="recharge">充值</a> <a href="../TransferBalance.aspx" id="ashengji" target="ifrpage">转账</a>
+                                </h3>
+                            </div>
+                            <!--买家功能-->
+                            <div class="main" id="menua">
+                                <div id="menua1" class="setCusInfo setCusInfourl">
+                                    <dl>
+                                        <dt class="on">菜单</dt>
+                                        <dd>
+                                            <a href='../buycard.aspx' target='ifrpage' class="spfl" onfocus="this.blur();" name="spfl">
+                                                商品分类</a></dd>
+                                        <dd>
+                                            <a href="../ProductFavorList.aspx" target='ifrpage' class="wdsc" onfocus="this.blur();"
+                                                name="wdsc">我的收藏</a></dd>
+                                        <dd>
+                                            <a href="../BuyCardHistory.aspx" target='ifrpage' class="wddd" onfocus="this.blur();"
+                                                name="wddd">我的订单</a></dd>
+                                        <dd>
+                                            <a href="../OnlineService.aspx" target='ifrpage' class="wdsh" onfocus="this.blur();"
+                                                name="wdsh">我的售后</a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">资金</dt>
+                                        <dd>
+                                            <a href="../PayMentOnLine.aspx" target='ifrpage' class="czjl" onfocus="this.blur();"
+                                                name="czjl">充值记录</a></dd>
+                                        <dd>
+                                            <a href="../AccountMoneyHistory.aspx" target='ifrpage' class="yemx" onfocus="this.blur();"
+                                                name="yemx">余额明细</a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">代理</dt>
+                                        <dd>
+                                            <a href="../SubCustomerList.aspx" target='ifrpage' class="wdxj" onfocus="this.blur();"
+                                                name="wdxj">我的下级</a></dd>
+                                        <dd>
+                                            <a href="../SaleSellHistory.aspx" target='ifrpage' class="xjtc" onfocus="this.blur();"
+                                                name="xjtc">下级提成</a></dd>
+                                        <dd>
+                                            <a href="../SponsoredLinks.aspx" class="tglj" target='ifrpage' onfocus="this.blur();"
+                                                name="">推广链接</a></dd>
+                                    </dl>
+                                </div>
+                                <div id="menua2" style="display: none" class="setCusInfo setCusInfourl">
+                                    <dl>
+                                        <dt class="on">账户</dt>
+                                        <dd>
+                                            <a href="../SubCustomerRegister.aspx" target="ifrpage" onfocus="this.blur();" name="dwzcxjzh">
+                                                代为注册下级账号</a></dd>
+                                        <dd>
+                                            <a href="../SubCustomerBuyHistory.aspx" target="ifrpage" onfocus="this.blur();" name="xjkhxffx">
+                                                下级客户消费分析</a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">财务</dt>
+                                        <dd>
+                                            <a href="../TransferAdd.aspx" target="ifrpage" onfocus="this.blur();" name="hkxjkh">
+                                                划款下级客户</a></dd>
+                                        <dd>
+                                            <a href="../TranCashToSub.aspx" target="ifrpage" onfocus="this.blur();" name="huakjlcx">
+                                                划款记录查询</a></dd>
+                                        <dd>
+                                            <a href="../ReturnMoneyHistory.aspx" target="ifrpage" onfocus="this.blur();" name="hkjlcx">
+                                                还款记录查询</a></dd>
+                                        
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">设置</dt>
+                                        <dd>
+                                            <a href="../BankAccountList.aspx" target="ifrpage" onfocus="this.blur();" name="xjhkzhsz">
+                                                下级汇款帐号设置</a></dd>
+                                        <dd>
+                                            <a href="../WebSetting.aspx" target="ifrpage" onfocus="this.blur();" name="wzxxsz">网站信息设置</a></dd>
+                                        <dd>
+                                            <a href="../VipCategoryList1.aspx" target="ifrpage" onfocus="this.blur();" name="wzmlgl">
+                                                网站目录管理</a></dd>
+                                        <dd>
+                                            <a href="../VipList.aspx" target="ifrpage" onfocus="this.blur();" name="xjvipwzlb">下级VIP网站列表</a></dd>
+                                    </dl>
+                                </div>
+                                <div id="menua3" style="display: none" class="setCusInfo setCusInfourl">
+                                    <dl>
+                                        <dt class="on">商品</dt>
+                                        <dd>
+                                            <a href="../SelfProduct/SelfProductList.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="ghspgl">供货商品管理</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/ESAccountList.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="zcspkcgl">直充商品库存管理</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/SelfProductInventory.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="kmspkcgl">卡密商品库存管理</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/CustomerIncome.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="ghsrzzye">供货收入转至余额</a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">直销订单</dt>
+                                        <dd>
+                                            <a href="../SelfProduct/SavingHandle.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="sgddlb">手工订单列表(<span id="Manual">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/SavingHandle.aspx?t=2" target="ifrpage" onfocus="this.blur();"
+                                                name="jkddlb">接口订单列表(<span id="Manual1">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/SavingDouble.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="kyddlb">可疑订单列表(<span id="Doubt">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/Saving.aspx" target="ifrpage" onfocus="this.blur();" name="czzdlb">
+                                                充值中的列表(<span id="Auto">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/ComplaintList.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="ddtscl">订单投诉处理(<span id="Complaint">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/SelfProductSaleReport.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="ghjymx">供货交易明细</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/SelfSaleInMoney.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="xsrzmx">销售入账明细</a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">零售订单</dt>
+                                        <dd>
+                                            <a href="../SelfProduct/DLSReceiveOrder.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="lssgddjd">零售手工订单接单(<span id="LSReceive">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/DLSHandleSave.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="lssgddlb">零售手工订单列表(<span id="LSManual">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/DLSReceiveOrder.aspx?t=2" target="ifrpage" onfocus="this.blur();"
+                                                name="lsjkjd">零售接口订单接单(<span id="LSReceive1">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/DLSHandleSave.aspx?t=2" target="ifrpage" onfocus="this.blur();"
+                                                name="lsjkddlb">零售接口订单列表(<span id="LSManual1">0</span>)</a></dd>
+                                        <dd>
+                                            <a href="../SelfProduct/DLSSaleOrderList2.aspx" target="ifrpage" onfocus="this.blur();"
+                                                name="lsghddmx">零售供货交易明细</a></dd>
+                                    </dl>
+                                    <dl>
+                                        <dt class="on">员工</dt>
+                                        <dd>
+                                            <a href="../SubPersonnel.aspx" target="ifrpage" onfocus="this.blur();" name="ygzhgl">
+                                                员工账号管理</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="td_right" valign="top" id="ifrpageBox" style="width: 90%">
+                    <iframe scrolling="no" id="ifrpage" name="ifrpage" frameborder="0" style="margin: 0;
+                        visibility: inherit; width: 100%; z-index: 1" onload="autoResize(this)"></iframe>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="footer clearfix">
+        <div class="box">
+            <!--本站链接-->
+            <div class="web com">
+                <div class="mar">
+                    <iframe id="iframeQR" frameborder="0" align="middle" width="72px" height="72px">
+                    </iframe>
+                    <h2>
+                        手机访问本站</h2>
+                </div>
+            </div>
+            <!--本站微信-->
+            <div id="WXQRCode" class="wx com">
+                <div class="mar">
+                    <iframe id="iframeQR2" frameborder="0" align="middle" width="72px" height="72px">
+                    </iframe>
+                    <h2>
+                        本站微信号</h2>
+                </div>
+            </div>
+            <div class="lx">
+                <div class="parents">
+                    <div class="parent">
+                        <!--客服qq-->
+                        <ul class='kfqq common'><li><a href='javascript:;'><span>专属咨询客服</span>:<em>451219189</em></a></li></ul>
+                        <!--QQ群-->
+                        <ul class='qqq common'><li><a href='javascript:;'><span>福利推荐代理群</span>:<em>554634731</em></a></li></ul>
+                        <!--本站信息-->
+                        <h3>
+                            <a href="javascript:;">&copy;Copyright <span id="HCopyright"></span>版权所有</a>
+                            <a href="http://tousu.kalegou.com/
+" target="_blank" class="ts">投诉本网站</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <form name="form1" method="post" action="Default.aspx" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTAwNjgyMTkxMw9kFggCBw8WAh4EVGV4dAVzPHVsIGNsYXNzPSdrZnFxIGNvbW1vbic+PGxpPjxhIGhyZWY9J2phdmFzY3JpcHQ6Oyc+PHNwYW4+5LiT5bGe5ZKo6K+i5a6i5pyNPC9zcGFuPjo8ZW0+NDUxMjE5MTg5PC9lbT48L2E+PC9saT48L3VsPmQCCQ8WAh8ABXU8dWwgY2xhc3M9J3FxcSBjb21tb24nPjxsaT48YSBocmVmPSdqYXZhc2NyaXB0OjsnPjxzcGFuPuemj+WIqeaOqOiNkOS7o+eQhue+pDwvc3Bhbj46PGVtPjU1NDYzNDczMTwvZW0+PC9hPjwvbGk+PC91bD5kAgsPFgIeCWlubmVyaHRtbGVkAg0PZBYCAgEPFgIfAGVkZKHMrJ7pQPolz6P7Sk+JomRsRoJZ" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=pH9e8eDYc05vMdGt-I1-0jOdSO7IKAC21xQZ38CawvaydkaVYmrACfbpDmbFFVdiEbPcMK1HBZ2VOubJIs_XlUR8AIo1&amp;t=635925382706406250" type="text/javascript"></script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="7434F215" />
+	<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" />
+	<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" />
+	<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+	<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+</div>
+    
+    
+
+<script type="text/javascript">
+//<![CDATA[
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+//]]>
+</script>
+</form>
+</body>
+</html>

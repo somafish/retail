@@ -20,4 +20,6 @@ Route::get("admin","admin/index/show");
 Route::get("home","admin/index/home");
 Route::get("showInclude","admin/index/showInclude");
 
+Route::get("home/showCategory","home/category/showProduction");
+Route::get("home/Index","home/index/show");
 
