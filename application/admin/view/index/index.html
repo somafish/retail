@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <title>后台登录</title>
 <link rel="stylesheet" href="__MYCSS__PATH__/index.css" />
+	<script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
 </head>
 
 <body>
@@ -14,14 +16,34 @@
 	<div class="logCon">
 		<form action="/admin/index/login" method="post">
 		<div class="line"><span>账号:</span>
-		<input class="bt_input" name="user" type="text" /></div>
+		<input class="bt_input" name="username" type="text" /></div>
 		<div class="line"><span>密码:</span>
-		<input class="bt_input" name="password" type="text" /></div>
+		<input class="bt_input" name="password" type="password" /></div>
 			<input name="id" value="1.1" type="hidden" />
-		<button type="submit" class="logingBut">登录</button>
+		<button type="submit" id="loginBtn" class="logingBut">登录</button>
 		</form>
 	</div>
 </div>
+
+<script>
+	
+	$("form").submit(function (e) {
+		$.post(
+				"/admin/index/login",
+				$("form").serialize(),
+				function (result) {
+					if (result.flag){
+						//跳转登录
+						window.location = "/admin/home"
+					} else{
+						alert("请检查您输入的账号或者密码");
+					}
+				}
+		)
+		return false;
+	})
+	
+</script>
 
 </body>
 

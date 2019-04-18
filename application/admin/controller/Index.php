@@ -13,13 +13,12 @@ namespace app\admin\controller;
 //index -> 前台 index.html -> index.css
 //admin -> 后台 index.html -> index.css
 
-use app\admin\validata\IndexValidata;
-use app\admin\validata\XX;
+use app\libs\exception\RoutineMessage;
 use think\Controller;
 use think\Db;
 use think\Request;
 use think\Session;
-use think\Validate;
+use app\admin\model\Admin as AdminModel;
 
 class Index extends Controller
 {
@@ -36,35 +35,19 @@ class Index extends Controller
     }
 
     //给后台管理员登陆的
-    public function login(){
-        $validata = new IndexValidata();
-        $validata->goCheck();
+    public function login(Request $request){
 
-        //说明 验证其通过了
-        //去做其他操作
-        $request = Request::instance();
+        $user = AdminModel::Login($request);
+        $msg = new RoutineMessage();
 
-//        //查询数据库
-//        $username = $request->param("user");
-//        $password  = $request->param("password");
-//        $data = Db::query("select * from admin where username=? and password=?",
-//            [$username,$password]);
-//
-//        var_dump($data);
-
-        $queryResutl = Db::query("select * from admin where username=? and password=?",
-            [$request->param("user"),$request->param("password")]);
-
-        if($queryResutl != null){
-            //转发 user -> 用于后面校验 用户是否登录
-            Session::set("user",$request->param("user"));
-            //重定向 30min
-            $this->redirect("/home");
+        if ($user == null){
+            $msg->msg = "Login Fail please check your password@username";
+            $msg->flag = false;
         }else{
-            echo "用户名或者密码错误";
+            Session::set("user",$request->post("username"));
         }
 
-
+        return json($msg,$msg->code);
     }
 
     public function home(){

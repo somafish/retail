@@ -17,9 +17,10 @@ Route::post("api/:version/test","api/:version.Banner/test");
 
 
 Route::get("admin","admin/index/show");
-Route::get("home","admin/index/home");
+Route::get("admin/home","admin/index/home");
 Route::get("showInclude","admin/index/showInclude");
 
 Route::get("home/showCategory","home/category/showProduction");
 Route::get("home/Index","home/index/show");
+Route::get("home/product","home/category/showItemProduct");
 

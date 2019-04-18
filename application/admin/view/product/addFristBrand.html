@@ -1,0 +1,95 @@
+<html>
+
+<head>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <style>
+
+
+        .fullBox{
+            margin: 20px;
+        }
+
+        .title{
+            width: 100%;
+            padding: 8px 20px;
+            background-color: #f5f5f5;
+            border: 1px solid #DDDDDD;
+            font-family: "微软雅黑";
+            font-size: 20px;
+            line-height: 30px;
+        }
+
+
+
+        .line{
+            width: 800px;
+            height: 55px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 15px;
+        }
+        .line input{
+            width: 400px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="title">
+    添加一级栏目
+</div>
+<div class="fullBox">
+
+
+
+
+    <div class="total">
+<form action="/admin/product/saveFristBrand" method="post">
+        <div class="line">
+            <div>
+                <span style="color: #f00;">*</span>
+                栏目名称：
+            </div>
+            <div style="margin-left: 10px;">
+                <input type="email" name="category_name" class="form-control"  placeholder="请输入标题">
+            </div>
+        </div>
+
+        <div class="line">
+            <div>
+                <span style="color: #f00;">*</span>
+                文字颜色：
+            </div>
+            <div style="margin-left: 10px;">
+                <input type="email" name="color" class="form-control"  placeholder="请选择颜色">
+            </div>
+        </div>
+</form>
+    </div>
+
+    <div style="clear: left; margin-top: 40px; margin-left: 40px">
+        <button type="button" class="btn btn-primary" onclick="onSubmit()">提交并更新</button>
+
+    </div>
+    <script>
+        function onSubmit(){
+            $("form").submit();
+        }
+
+
+    </script>
+</div>
+</body>
+
+
+</html>

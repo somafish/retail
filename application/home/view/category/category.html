@@ -57,6 +57,8 @@
             border: 1px solid #E7CDA0;
             border-radius: 10px;
             box-sizing:border-box;
+            -moz-box-shadow:1px 1px 1px #333333; -webkit-box-shadow:1px 1px 1px #333333; box-shadow:1px 1px 1px #333333;
+
         }
 
         .production{
@@ -70,7 +72,7 @@
             background-color: #E0F3FC;
             width: 100%;
             margin-bottom: 10px;
-            font-size: 15px;
+            font-size: 13px;
         }
 
         table tr th{
@@ -142,7 +144,7 @@
                     <{/if}>
                     <span class="hidden"><{$i++}></span>
                     <{if condition="$items != null"}>
-                    <td><a href="#"><font color="<{$items.color}>"><{$items.item_name}></font></a> </td>
+                    <td><a href="/home/product"><font color="<{$items.color}>"><{$items.item_name}></font></a> </td>
                     <{else /}>
                     <td>&nbsp;</td>
                     <{/if}>
@@ -151,6 +153,7 @@
                     <{/if}>
                     <{/foreach}>
             </table>
+
         <{/foreach}>
 
 

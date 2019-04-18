@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        table{
+            background-color: #FFFEF7;
+            width: 750px;
+            margin: 0 auto;
+            border-collapse:separate;
+            border: 1px solid #F6DF80;
+            border-top: none;
+            border-right: none;
+            margin-top: 10px;
+        }
+
+        table tr td{
+            padding: 5px 0;
+            border-top: 1px solid #F6DF80;
+            border-right: 1px solid #F6DF80;
+            font-size: 15px;
+        }
+        .accountInput{
+            width: 300px;
+        }
+        .selectInput{
+            width: 150px;
+        }
+
+        .right{
+            padding-left: 5px;
+        }
+
+        textarea{
+            width: 230px;
+            height: 40px;
+            text-align: left;
+            resize: none;
+        }
+        .bottom_btn{
+            margin-left: 240px;
+            margin-top: 10px;
+        }
+        .loading{
+            margin-left: 240px;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="fullBox">
+        <table cellspacing="0">
+            <tr>
+                <td style="text-align: right;">商品名称：</td>
+                <td class="right">【特供热卖】特殊方法开通丨QQ永久会员（理论永久）丨全天众人秒单。
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">商品类型：</td>
+                <td class="right">
+                    <font color="blue">客服人工充值</font>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">QQ帐号：	</td>
+                <td class="right">
+                    50023427
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="text-align: right;">重复QQ号码：</td>
+                <td class="right">
+                    50023427
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">购买数量：</td>
+                <td class="right">
+                    1个
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">购买总价：</td>
+                <td class="right">
+                    ￥<font color="#f00">5.650</font> 元
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="text-align: right;">购买备注：</td>
+                <td class="right">
+
+                </td>
+            </tr>
+
+        </table>
+
+        <div class="bottom_btn" id="confirm" >
+            <button  type="button" class="btn btn-warning" onclick="order()" style="padding: 8px 20px; color: #000; font-size: 16px;">确认购买</button>
+            <button type="button" class="btn btn-info" style="background-color: #e8e8e6; border: none; padding: 8px 20px; color: #000; font-size: 16px;">关闭</button>
+        </div>
+        <div class="loading" id="loading" style="display: none;">
+            <img src="images/loading.gif">
+            <font color="green" style="margin-left: 5px;">
+                正在加载，请稍等...
+            </font>
+        </div>
+
+    </div>
+<script>
+
+    function order() {
+        $("#confirm").css("display","none");
+        $("#loading").css("display","block");
+    }
+
+</script>
+</body>

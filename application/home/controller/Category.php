@@ -32,11 +32,16 @@ class Category extends Controller
 //        return json($result->toArray());
 
         $result = CategoryModel::getItemWithCategory();
-        return json($result);
-//        $this->assign('list',$result);
-//        $content = $this->fetch('category');
+        //return json($result);
+        $this->assign('list',$result);
+        return $this->fetch('category');
         //1. 写到 一个html中
-       // return $this->fetch('test');
+//        return $this->fetch('test');
+    }
+
+    public function showItemProduct(){
+        //根据id 显示商品
+        return $this->fetch('item-list');
     }
 
 }
