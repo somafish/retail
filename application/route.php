@@ -22,5 +22,14 @@ Route::get("showInclude","admin/index/showInclude");
 
 Route::get("home/showCategory","home/category/showProduction");
 Route::get("home/Index","home/index/show");
-Route::get("home/product","home/category/showItemProduct");
+Route::get("home/product","home/product/showItemProduct");
+Route::get("home/supplier","home/supplier/showIndex");
+
+
+Route::get("order/take/:id","home/order/showOrder");
+Route::post("order/confirm","home/order/showConfirmOrder");
+Route::post("order/pay","home/order/order");
+Route::get("order/success","home/order/orderSuccess");
+Route::get("order/showMyOrder","home/order/showMyOrder");
+Route::get("order/showOrderContent","home/order/showOrderContent");
 

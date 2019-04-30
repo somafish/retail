@@ -57,4 +57,16 @@ class Product extends Controller
         }
     }
 
+    /**
+     * 显示当前平台下的所有商品
+     * @return mixed
+     */
+    public function showAllProductList(){
+        $result = CategoryModel::getCategoryWithItemWithPorcut();
+
+        $this->assign("list",$result);
+        return $this->fetch('all-product');
+        //return json($result);
+    }
+
 }

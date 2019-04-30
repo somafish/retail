@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        .totalBox{
+            margin: 5px;
+        }
+
+        table{
+            text-align: center;
+        }
+        table tr th{
+            text-align: center;
+        }
+        table tr td{
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="totalBox">
+    <div class="alert alert-info" role="alert">
+        我的商品管理
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>编号</th>
+            <th width="400">商品名称</th>
+            <th width="200">二级目录</th>
+            <th>售价</th>
+            <th width="120">剩余库存</th>
+            <th>审核</th>
+            <th>操作</th>
+        </tr>
+
+        <{foreach name='list' item='product'}>
+        <tr class="active" style="text-align: left">
+            <td><{$product.id}></td>
+            <td><{$product.product_name}></td>
+            <td><{$product.product_item.item_name}></td>
+            <td><{$product.price}></td>
+            <td><{$product.stock}></td>
+            <td>
+                <{if condition="$product.statu == 0"}>
+                <span title="审核中..." class="glyphicon glyphicon-repeat"></span>
+                <{/if}>
+                <{if condition="$product.statu == 1"}>
+                <span title="审核通过" class="glyphicon glyphicon-ok"></span>
+                <{/if}>
+                <{if condition="$product.statu == 2"}>
+                <span title="驳回，请修改" class="glyphicon glyphicon-remove"></span>
+                <{/if}>
+            </td>
+            <td>删除</td>
+        </tr>
+        <{/foreach}>
+
+
+    </table>
+
+</div>
+
+</body>
+</html>

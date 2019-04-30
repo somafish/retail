@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            background-color: #F6F8FA;
+            border-bottom: 1px solid #D1D9DF;
+            font-size: 16px;
+            padding-left: 20px;
+            font-weight: bold;
+        }
+
+        .seach_condition{
+            width: 100%;
+            height:120px;
+            margin-top: 15px;
+            background-color: #F5FAFE;
+            border-top: 1px solid #DAEDFA;
+            border-bottom: 1px solid #DAEDFA;
+        }
+
+        .seach_condition{
+            display: flex;
+            flex-direction: column;
+            padding-left: 30px;
+        }
+        .seach_condition_vague{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .seach_condition_vague a{
+            margin-left: 10px;
+            color: #0f0f0f;
+        }
+        .seach_condition_vague a:after{
+            color: #2ecee7;
+        }
+
+        .seach_condition_accurate{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 20px;
+        }
+        table{
+            border: 1px solid #A4D2DC;
+            margin: 10px 10px;
+        }
+        table th{
+            background-color: #E9F9FE;
+            border: 1px solid #A4D2DC;
+            text-align: center;
+            padding: 10px 0px;
+            font-family: "微软雅黑";
+            font-size: 11px;
+        }
+        table tr td{
+            border: 1px solid #A4D2DC;
+            text-align: center;
+            padding: 10px 0px;
+        }
+        table tr:hover{
+            background-color: #DAE8F5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fullBox">
+
+        <div class="header">
+            我的订单
+        </div>
+
+        <div class="seach_condition">
+
+            <div class="seach_condition_vague">
+                订单状态：
+                <select class="form-control" style="width: 130px">
+                    <option>全部状态</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                <span style="margin: 0 20px;">查询时段：</span>
+                <a href="#">今天</a>
+                <a href="#">昨天</a>
+                <a href="#" style="color: #2ecee7">近30天</a>
+                <a href="#">近90天</a>
+            </div>
+
+            <div class="seach_condition_accurate">
+
+                精确查询：
+                <select class="form-control" style="width: 130px">
+                    <option>商品名称：</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                <input type="text" style="width: 170px; margin-left: 15px;" class="form-control" id="exampleInputEmail1" placeholder="">
+                <button type="button" class="btn btn-primary" style="padding: 5px 20px; margin-left: 30px">查询</button>
+
+            </div>
+        </div>
+
+        <table>
+
+            <thead>
+                <th style="width: 230px;">
+                    订单号
+                </th>
+                <th style="width: 220px;">
+                    下单日期
+                </th>
+                <th style="width: 600px;">
+                    商品名称
+                </th>
+                <th style="width: 120px;">
+                    数量
+                </th>
+                <th style="width: 120px;">
+                    总购价
+                </th>
+                <th style="width: 180px;">
+                    充值账号
+                </th>
+
+                <th style="width: 120px;">
+                    订单状态
+                </th>
+                <th style="width: 140px;">
+                    订单详情
+                </th>
+            </thead>
+
+            <tr>
+                <td>D42949901904081811</td>
+                <td>2019-04-30 12:47:14</td>
+                <td style="text-align: left;padding:10px 5px;">联系朋友同学注册本网站，上级编号填写你的编号，注册10人之后，下单此链接领取10000名片赞	</td>
+                <td>1</td>
+                <td>6.888</td>
+                <td>50023427</td>
+                <td>
+                    <span style="color: brown">等待处理</span>
+                </td>
+                <td>
+
+                    <a href="#" style="color: #0b6cbc">订单详情</a>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="3">本页合计</td>
+                <td>1</td>
+                <td>6.88</td>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+
+    </div>
+
+</body>
+</html>

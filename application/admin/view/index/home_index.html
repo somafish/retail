@@ -362,16 +362,16 @@ function link_operating(name,title){
                      <li><a href="#" class="dropdown-toggle"><i class="icon-desktop"></i><span class="menu-text"> 分类管理 </span><b class="arrow icon-angle-down"></b></a>
 					   <ul class="submenu">
                          <li class="home"><a  href="javascript:void(0)" name="/admin/product/showProducPage"  title="全部分类" class="iframeurl"><i class="icon-double-angle-right"></i>全部分类</a></li>
-						 <li class="home"><a  href="javascript:void(0)" name="Brand_Manage.html" title="品牌管理"  class="iframeurl"><i class="icon-double-angle-right"></i>品牌管理</a></li>
-						 <li class="home"><a href="javascript:void(0)" name="Category_Manage.html" title="分类管理"  class="iframeurl"><i class="icon-double-angle-right"></i>分类管理</a></li>
+						 <li class="home"><a  href="javascript:void(0)" name="/admin/product/addFristBrand" title="添加一级分类"  class="iframeurl"><i class="icon-double-angle-right"></i>添加一级目录</a></li>
+						 <li class="home"><a href="javascript:void(0)" name="admin/product/showAddSecondBrand" title="添加二级分类"  class="iframeurl"><i class="icon-double-angle-right"></i>添加二级目录</a></li>
 
 						</ul>
 					</li>
 					<li>
-					<a href="#" class="dropdown-toggle"><i class="icon-picture "></i><span class="menu-text"> 图片管理 </span><b class="arrow icon-angle-down"></b></a>
+						<li><a href="#" class="dropdown-toggle"><i class="icon-laptop"></i><span class="menu-text"> 商品管理 </span><b class="arrow icon-angle-down"></b></a>
 						<ul class="submenu">
-						<li class="home"><a href="javascript:void(0)" name="advertising.html" title="广告管理" class="iframeurl"><i class="icon-double-angle-right"></i>广告管理</a></li>
-						<li class="home"><a href="javascript:void(0)" name="Sort_ads.html" title="分类管理"  class="iframeurl"><i class="icon-double-angle-right"></i>分类管理</a></li>
+						<li class="home"><a href="javascript:void(0)" name="/admin/product/showAllProductList" title="查看全部商品" class="iframeurl"><i class="icon-double-angle-right"></i>查看全部商品</a></li>
+						<li class="home"><a href="javascript:void(0)" name="Sort_ads.html" title="分类管理"  class="iframeurl"><i class="icon-double-angle-right"></i>发布审核</a></li>
 							</ul>
 						</li>
 					<li>
@@ -525,7 +525,7 @@ function link_operating(name,title){
 				try {
 					if (iframe) {
 						$(iframe).height(0);
-						$(iframe).height($(window.frames["iframe"].document.body).height() + 30);
+						$(iframe).height($(window.frames["iframe"].document.body).height() + 230);
 						//var h =  $(window.frames["iframe"].document.body).height() + 30;
 						//console.log(h);
 					}

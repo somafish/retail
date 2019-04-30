@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        .list-group a{
+            margin: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="alert alert-info" role="alert" style="margin: 3px;">
+    请选择一个二级分类
+</div>
+<div class="list-group">
+    <{if condition="$list == null"}>
+    <span style="margin-left: 10px; color: brown">当前分类下没有目录</span>
+    <{/if}>
+    <{foreach name='list' item='itmes'}>
+    <a href="javascript:" class="list-group-item" onclick="clickme(this,<{$itmes.id}>)">
+        <{$itmes.item_name}>
+    </a>
+    <{/foreach}>
+
+</div>
+
+<script>
+
+    function clickme(obj,id) {
+        $(".list-group a").removeClass("active")
+        $(obj).addClass("active")
+        $(window.parent.$("#nextSetp")).removeAttr("disabled")
+        $(window.parent.$("#pid")).val(id)
+    }
+
+
+
+</script>
+</body>
+</html>

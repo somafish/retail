@@ -139,7 +139,7 @@
 
         <table>
             <tr>
-                <th width="80px">
+                <th width="100px">
                     编号
                 </th>
                 <th width="710px">
@@ -159,21 +159,29 @@
                 </th>
             </tr>
 
+            <{if condition='$list == null'}>
+            <tr>
+                <td style="color: #2ecee7;" colspan="6">
+                    当前分类下暂无商品信息
+                </td>
+            </tr>
+            <{/if}>
+            <{foreach name='list' item='product'}>
 
             <tr style="">
-                <td style="">47029</td>
+                <td style=""><{$product.id}></td>
                 <td style="text-align: left; ">
-                    <font color="#6495ed">
-                        【特约推荐】稳定理论永久QQ黄钻、全网独家下单秒开、超低价不需要质保/全天24小时自动开单~通道1
+                    <font color="<{$product.color}>">
+                        <{$product.product_name}>
                     </font>
                 </td>
                 <td >30天</td>
                 <td >
                     <span class="Timebox">24小时内</span>
                 </td>
-                <td ><font color="#f00">6.480</font></td>
+                <td ><font color="#f00"><{$product.price}></font></td>
                 <td >
-                    <button onclick="openWindows()" type="button" class="btn btn-danger" style="height: 25px; width: 75px; text-align: center; line-height: 5px;">立即下单</button>
+                    <button onclick="openWindows(<{$product.id}>)" type="button" class="btn btn-danger" style="height: 25px; width: 75px; text-align: center; line-height: 5px;">立即下单</button>
                 </td>
             </tr>
 
@@ -182,52 +190,9 @@
                     <div class="cultLine"></div>
                 </td>
             </tr>
+            <{/foreach}>
 
-            <tr style="">
-                <td >47029</td>
-                <td style="text-align: left; ">
-                    <font color="#6495ed">
-                        【特约推荐】稳定理论永久QQ黄钻、全网独家下单秒开、超低价不需要质保
-                    </font>
-                </td>
-                <td >30天</td>
-                <td >
-                    <span class="Timebox">24小时内</span>
-                </td>
-                <td ><font color="#f00">6.480</font></td>
-                <td >
-                    <button type="button" class="btn btn-danger" style="height: 25px; width: 75px; text-align: center; line-height: 5px;">立即下单</button>
-                </td>
-            </tr>
 
-            <tr>
-                <td colspan="6" style="padding: 0;">
-                    <div class="cultLine"></div>
-                </td>
-            </tr>
-
-            <tr style="">
-                <td style="">47029</td>
-                <td style="text-align: left; ">
-                    <font color="#6495ed">
-                        【特约推荐】稳定理论永久QQ黄钻、全网独家下单秒开、超低价不需要质保/全天24小时自动开单~通道1
-                    </font>
-                </td>
-                <td >30天</td>
-                <td >
-                    <span class="Timebox">24小时内</span>
-                </td>
-                <td ><font color="#f00">6.480</font></td>
-                <td >
-                    <button onclick="" type="button" class="btn btn-danger" style="height: 25px; width: 75px; text-align: center; line-height: 5px;">立即下单</button>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="6" style="padding: 0;">
-                    <div class="cultLine"></div>
-                </td>
-            </tr>
 
         </table>
 
@@ -235,8 +200,8 @@
 
 </div>
 <script>
-    function openWindows(){
-        var Win = window.open("http://localhost/test/order.html", "", "width=780,height=580,resizable=1,scrollbars=yes,menubar=no,status=yes");
+    function openWindows(id){
+        var Win = window.open("/order/take/"+id, "", "width=780,height=580,resizable=1,scrollbars=yes,menubar=no,status=yes");
     }
 
 </script>

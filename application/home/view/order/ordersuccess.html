@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .fullBox{
+        width: 450px;
+        margin: 0 auto;
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    h3{
+        color: #2cc138;
+    }
+    button{
+    }
+
+</style>
+
+<script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+<script src="/static/boot/js/bootstrap.min.js"></script>
+
+<link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+<body>
+
+<div class="fullBox">
+
+    <img src="/static/images/home/success.png">
+    <h3 style="margin-top: 60px;">
+        <font color="#2cc138">
+        下单成功，订单将在10天 内处理完成！
+        </font>
+    </h3>
+    <h3 style="margin-bottom: 50px;">
+        <font color="#2cc138">
+        请在我的订单内查看详情。
+        </font>
+    </h3>
+
+    <button type="button" class="btn btn-info" id="close">关闭当前页面</button>
+
+</div>
+
+<script>
+
+    $("#close").click(function () {
+        window.close();
+    })
+
+</script>
+</body>
+</html>

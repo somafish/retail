@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        table{
+            background-color: #FFFEF7;
+            width: 750px;
+            margin: 0 auto;
+            border-collapse:separate;
+            border: 1px solid #F6DF80;
+            border-top: none;
+            border-right: none;
+            margin-top: 10px;
+        }
+
+        table tr td{
+            padding: 5px 0;
+            border-top: 1px solid #F6DF80;
+            border-right: 1px solid #F6DF80;
+            font-size: 15px;
+        }
+        .accountInput{
+            width: 300px;
+        }
+        .selectInput{
+            width: 150px;
+        }
+
+        .right{
+            padding-left: 5px;
+        }
+
+        textarea{
+            width: 230px;
+            height: 40px;
+            text-align: left;
+            resize: none;
+        }
+        .bottom_btn{
+            margin-left: 240px;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="fullBox">
+        <form id="form" action="/order/confirm" method="post">
+        <table cellspacing="0">
+            <tr>
+                <td style="text-align: right; min-width: 190px;">商品名称：</td>
+                <td class="right"><{$list.product_name}>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">商品类型：</td>
+                <td class="right">
+                    <font color="blue">客服人工充值</font>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">QQ帐号：	</td>
+                <td class="right">
+                    <input type="text" name="qq" class="form-control accountInput" id="" placeholder="please input.">
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="text-align: right;">重复QQ号码：</td>
+                <td class="right">
+                    <input type="text" name="reqq" class="form-control accountInput"  placeholder="please replay">
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">购买数量：</td>
+                <td class="right">
+                    <select name="singlesize" class="form-control selectInput">
+                        <option><{$list.singlesize}></option>
+                    </select>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right;">购买总价：</td>
+                <td class="right">
+                    ￥<font color="#f00"><{$list.price}></font> 元
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="text-align: right;">购买备注：</td>
+                <td class="right">
+                    <textarea name="remarks" placeholder=""></textarea>
+                </td>
+            </tr>
+
+        </table>
+
+        <div class="bottom_btn">
+            <button id="confirm" type="button" class="btn btn-warning" style="padding: 8px 20px; color: #000; font-size: 16px;"><a  style="color: #f1f1f1" >下一步</a> </button>
+            <button type="button" class="btn btn-info" style="background-color: #e8e8e6; border: none; padding: 8px 20px; color: #000; font-size: 16px;">关闭</button>
+
+<input hidden name="id" value="<{$list.id}>">
+        </div>
+        </form>
+    </div>
+
+<script>
+
+    $(function () {
+        $("#confirm").click(function () {
+            $('#form').submit()
+        })
+    })
+</script>
+</body>

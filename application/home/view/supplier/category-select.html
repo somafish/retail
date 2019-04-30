@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        .list-group a{
+            margin: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="alert alert-info" style="margin: 3px;" role="alert">
+    请选择一个一级分类
+</div>
+<div class="list-group">
+    <{foreach name="list" item='category'}>
+    <a href="javascript:" class="list-group-item" onclick="clickme(this,<{$category.id}>)">
+        <{$category.category_name}>
+    </a>
+    <{/foreach}>
+
+</div>
+
+<script>
+
+    function clickme(obj,id) {
+        $(".list-group a").removeClass("active")
+        $(obj).addClass("active")
+        $(window.parent.$("#item")).attr("src","/home/supplier/showItemSelect?id="+id);
+        $(window.parent.$("#nextSetp")).attr("disabled","disabled")
+    }
+
+</script>
+</body>
+</html>

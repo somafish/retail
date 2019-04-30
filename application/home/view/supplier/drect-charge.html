@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        .totalBox{
+            margin: 5px;
+            height: 690px;
+        }
+
+        table{
+            text-align: center;
+        }
+        table tr th{
+            text-align: center;
+        }
+        table tr td{
+            text-align: center;
+        }
+
+        .left-fram{
+            margin-left: 50px;
+            float: left;
+            width: 400px;
+            height: 500px;
+
+        }
+
+        .right-fram{
+            margin-left: 20px;
+            float: left;
+            width: 400px;
+            height: 500px;
+        }
+
+
+        .next{
+            width: 300px;
+            height: 100px;
+            margin: 0 auto;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+        }
+        .next button{
+            padding: 10px 30px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="totalBox">
+    <div class="alert alert-info" role="alert">
+        添加直充商品
+    </div>
+
+    <iframe  class="left-fram" src="/home/supplier/showCategorySelect"></iframe>
+    <div style="float: left; height: 500px; line-height: 500px; margin-left: 20px; font-size: 46px; font-weight: bold;">
+        >>>>
+    </div>
+    <iframe name="item" id="item" class="right-fram" src="/home/supplier/showItemSelect?id=0"></iframe>
+
+    <div class="next">
+    <button type="button" id="nextSetp" class="btn btn-primary" disabled="disabled">下一步，填写商品信息</button>
+    </div>
+<input hidden id="pid" value="0">
+</div>
+<script>
+    $("#nextSetp").click(function () {
+        var pid = $("#pid").val()
+        window.location = "/home/supplier/showAddItem?pid="+pid + "&flag=1"
+    })
+
+</script>
+</body>
+</html>

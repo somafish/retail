@@ -24,6 +24,10 @@ class Category extends Model
         return $this->hasMany('Item','cid','id');
     }
 
+    public static function getCategory(){
+        return self::select()->toArray();
+    }
+
     public static function getItemWithCategory($fill = true){
         $result = self::with(['item'])->select();
         $result = $result->toArray();
@@ -42,4 +46,11 @@ class Category extends Model
 
         return $result;
     }
+
+    public static function getCategoryWithItemWithPorcut(){
+        return self::with(['item','item.getProduct'])->select()->toArray();
+    }
+
+
+
 }

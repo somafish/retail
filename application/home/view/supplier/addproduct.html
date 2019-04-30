@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+        .totalBox{
+            margin: 5px;
+            height: 690px;
+        }
+
+        table{
+            text-align: center;
+        }
+        table tr th{
+            text-align: center;
+        }
+        table tr td{
+            text-align: center;
+        }
+
+        .left-fram{
+            margin-left: 50px;
+            float: left;
+            width: 400px;
+            height: 500px;
+
+        }
+
+        .right-fram{
+            margin-left: 20px;
+            float: left;
+            width: 400px;
+            height: 500px;
+        }
+
+
+        .next{
+            width: 300px;
+            height: 100px;
+            margin: 0 auto;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+        }
+        .next button{
+            padding: 10px 30px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="totalBox">
+    <div class="alert alert-info" role="alert">
+        填写商品详细信息
+    </div>
+<form method="post" action="/home/supplier/saveProduct">
+    <table class="table table-bordered">
+        <tr>
+            <th>填写项目</th>
+            <th>内容填充</th>
+
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">商品名称</td>
+            <td>
+                <input type="text" style="" class="form-control" name="product_name" placeholder="请输入商品名称">
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">文本颜色</td>
+            <td>
+                <input type="text"  style="width: 100px;" class="form-control" name="color" placeholder="#f00">
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top: 10px;">最晚完成时间</td>
+            <td>
+                <label class="radio-inline" style="float: left; margin-left: 5px;">
+                    <input type="radio"  checked name="" id="inlineRadio1" value="option1"> 24小时内
+                </label>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td style="padding-top: 10px;">售后期限</td>
+            <td>
+                <label class="radio-inline" style="float: left; margin-left: 5px;">
+                    <input type="radio" checked name="" value="option1"> 30天
+                </label>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td style="padding-top: 10px;">二级目录</td>
+            <td>
+                <label class="radio-inline" style="float: left; margin-left: 5px;">
+                    <input type="radio"  checked name=""  value="option1"> 【特价开放】永久QQ会员（秒单）
+                </label>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">商品单价</td>
+            <td>
+                <div class="input-group">
+                    <span class="input-group-addon">￥</span>
+                    <input type="text" style="width: 200px;" name="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">库存</td>
+            <td>
+                <div class="input-group">
+
+                    <input type="text" style="width: 200px;" name="stock" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-addon " style="float: left; text-align: center; line-height: 22px; width: 55px; height: 34px;">个/件</span>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">单次购买数量</td>
+            <td>
+                <div class="input-group">
+
+                    <input type="text" name="singlesize" style="width: 200px;" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <span class="input-group-addon " style="float: left; text-align: center; line-height: 22px; width: 55px; height: 34px;">个/件</span>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">选择充值模板</td>
+            <td>
+                <div class="dropdown" style="float: left; width: auto;">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span id="text">请选择一个充值模板</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a onclick="selectPid('QQ账号充值',1)" href="#">QQ账号充值</a></li>
+                        <li><a onclick="selectPid('QQ账号和密码的充值模板',2)" href="#">QQ账号和密码的充值模板</a></li>
+                        <li><a onclick="selectPid('手机号码充值',3)" href="#">手机号码充值</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding-top: 15px;">备注</td>
+            <td>
+                <input type="text" style="width: 400px;" name="tag" class="form-control"  placeholder="请输入备注，便于管理员审核">
+            </td>
+        </tr>
+
+        <tr>
+           <td colspan="2">
+               <button type="button" id="btn" class="btn btn-info" style="padding: 11px 30px;">提交商品</button>
+
+           </td>
+        </tr>
+    </table>
+    <input name="tid" id="tid" value="0" hidden>
+    <input name="pid" value="<{$pid}>" hidden>
+</form>
+</div>
+<script>
+
+    function selectPid(text,pid){
+        $("#text").text(text)
+        $("#tid").val(pid)
+    }
+
+    $("#btn").click(function () {
+        //todo 一系列的判读...
+        $("form").submit()
+    })
+
+</script>
+</body>
+</html>

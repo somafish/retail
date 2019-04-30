@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>购卡中心</title>
+    <title>供货商系统</title>
 	  <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
 
 	  <script src="/static/boot/js/bootstrap.min.js"></script>
@@ -26,8 +26,6 @@
 			  }
 		  }
 	  </script>
-	  <script src="/static/js/home/jquery-1.9.1.min.js"></script>
-	  <script src="/static/js/home/layer/layer.js"></script>
 
     <![endif]-->
     <style type="text/css">
@@ -211,9 +209,9 @@
 				  <span class="caret"></span>
 			  </button>
 			  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				  <li><a href="#">用户系统</a></li>
+				  <li><a href="/home/Index">用户系统</a></li>
 				  <li><a href="#">Another action</a></li>
-				  <li><a href="/home/supplier">供货商系统</a></li>
+				  <li><a href="#">供货商系统</a></li>
 
 			  </ul>
 		  </div>
@@ -223,9 +221,12 @@
   </div>
 
     <nav class="navbar navbar-inverse bule" style="height: 20px; clear: left;">
-		<a href="#"><li>首页</li></a>
-		<a href="#"><li>商品分类</li></a>
-		<a href="/order/showMyOrder" target="ifrpage"><li>我的订单</li></a>
+  <a href="#"><li>首页</li></a>
+  <a href="#"><li>商品管理</li></a>
+		<a href="#"><li>提成余额</li></a>
+		<a href="#"><li>提成转余额</li></a>
+		<a href="#"><li>供货明细</li></a>
+		<a href="#"><li>入账明细</li></a>
 </nav>
 
 	<div class="totalBox">
@@ -255,41 +256,90 @@
 		<div class="container_menu">
 			<div class="menu_header">
 				<li class="menu_li">
-					<span class="glyphicon glyphicon-list icons"></span>菜单
+					<span class="glyphicon glyphicon-list icons"></span>商品
 				</li>
 			</div>
 
 			<div class="menu-item">
-				<a href="/home/showCategory" target="ifrpage"><li><span class="glyphicon glyphicon-th-large icons"></span>商品分类</li></a>
-				<li><a href="#"><span class="glyphicon glyphicon-heart icons"></span>我的收藏</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-edit icons"></span>我的订单</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-th-list icons"></span>我的售后</a></li>
+				<a href="/home/supplier/getSupplierList" target="ifrpage"><li><span class="glyphicon glyphicon-th-large icons"></span>供货商品管理</li></a>
+				<li><a href="/home/supplier/showAddDirectCharge" target="ifrpage"><span class="glyphicon glyphicon-heart icons"></span>添加直充商品</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-edit icons"></span>添加卡密商品</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-th-list icons"></span>供货收入转入余额</a></li>
 
 			</div>
 
 			<div class="menu_header no-radius">
 				<li class="menu_li ">
-					<span class="glyphicon glyphicon-yen icons"></span>资金
+					<span class="glyphicon glyphicon-yen icons"></span>直销订单
 				</li>
 			</div>
 
 			<div class="menu-item">
-				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>充值记录</li></a>
-				<a href="#"><li><span class="glyphicon glyphicon-eur icons"></span>余额明细</li></a>
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					手工充值订单(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					接口订单列表(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					可疑订单列表(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					充值中的列表(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					订单投诉处理(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#" target="ifrpage"><li><span class="glyphicon glyphicon-th-large icons"></span>
+					供货交易明细</li></a>
+
+				<a href="#" target="ifrpage"><li><span class="glyphicon glyphicon-th-large icons"></span>
+					销售入账明细</li></a>
+
+
 			</div>
 
 			<div class="menu_header no-radius">
 				<li class="menu_li ">
-					<span class="glyphicon glyphicon-user icons"></span>代理
+					<span class="glyphicon glyphicon-user icons"></span>零售订单
 				</li>
 			</div>
 
 			<div class="menu-item">
-				<a href="#"><li><span class="glyphicon glyphicon-star icons"></span>我的下级</li></a>
-				<a href="#"><li><span class="glyphicon glyphicon-th-list icons"></span>下级提成</li></a>
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					零售手工订单接单(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					零售手工订单列表(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					零售接口订单接单(<span style="color: #f00">0</span>)
+				</li></a>
+
+				<a href="#"><li><span class="glyphicon glyphicon-random icons"></span>
+					零售接口订单列表(<span style="color: #f00">0</span>)
+				</li></a>
+				<a href="#" target="ifrpage"><li><span class="glyphicon glyphicon-th-large icons"></span>
+					零售供货交易明细</li></a>
+			</div>
+
+
+			<div class="menu_header no-radius">
+				<li class="menu_li ">
+					<span class="glyphicon glyphicon-user icons"></span>员工
+				</li>
+			</div>
+
+			<div class="menu-item">
 				<a href="#"><li style="border-radius: 0px 0px 5px 5px;"><span class="glyphicon glyphicon-send
- icons"></span>推广链接</li></a>
-
+ icons"></span>员工账号管理</li></a>
 			</div>
 
 
@@ -299,7 +349,7 @@
 	</div> <!--left-->
 
 	<div class="right">
-		<iframe scrolling="no" id="ifrpage" name="ifrpage" src="/home/showCategory" frameborder="0" style="margin: 0;
+		<iframe scrolling="no" id="ifrpage" name="ifrpage" src="/home/supplier/getSupplierList" frameborder="0" style="margin: 0;
                         visibility: inherit; width: 100%; z-index: 1" onload="autoResize(this)"></iframe>
 
 	</div><!--right-->
@@ -312,19 +362,5 @@
 		福利推荐代理群:554634731
 		©Copyright 版权所有 投诉本网站
 	</div>
-  <script>
-	  function test() {
-		  layer.open({
-		      type: 2,
-		      title: ['订单详情','background-color:#e6f0f7;color:#003b6c;'],
-		      maxmin: false,
-		      shadeClose: false, //点击遮罩关闭层
-		      area : ['1100px' , '530px'],
-		      content: '/order/showOrderContent',
-			  theme:'#009688'
-		  });
-	  }
-
-  </script>
   </body>
 </html>

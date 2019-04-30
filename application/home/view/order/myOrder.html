@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/boot/js/jquery-3.2.1.min.js"></script>
+
+    <script src="/static/boot/js/bootstrap.min.js"></script>
+
+    <link href="/static/boot/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
+        body{
+            min-height: 600px;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            background-color: #F6F8FA;
+            border-bottom: 1px solid #D1D9DF;
+            font-size: 16px;
+            padding-left: 20px;
+            font-weight: bold;
+        }
+
+        .seach_condition{
+            width: 100%;
+            height:120px;
+            margin-top: 15px;
+            background-color: #F5FAFE;
+            border-top: 1px solid #DAEDFA;
+            border-bottom: 1px solid #DAEDFA;
+        }
+
+        .seach_condition{
+            display: flex;
+            flex-direction: column;
+            padding-left: 30px;
+        }
+        .seach_condition_vague{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .seach_condition_vague a{
+            margin-left: 10px;
+            color: #0f0f0f;
+        }
+        .seach_condition_vague a:after{
+            color: #2ecee7;
+        }
+
+        .seach_condition_accurate{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 20px;
+        }
+        table{
+            border: 1px solid #A4D2DC;
+            margin: 10px 10px;
+        }
+        table th{
+            background-color: #E9F9FE;
+            border: 1px solid #A4D2DC;
+            text-align: center;
+            padding: 10px 0px;
+            font-family: "微软雅黑";
+            font-size: 10px;
+        }
+        table tr td{
+            border: 1px solid #A4D2DC;
+            text-align: center;
+            padding: 10px 10px;
+        }
+        table tr:hover{
+            background-color: #DAE8F5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fullBox">
+
+        <div class="header">
+            我的订单
+        </div>
+
+        <div class="seach_condition">
+
+            <div class="seach_condition_vague">
+                订单状态：
+                <select class="form-control" style="width: 130px">
+                    <option>全部状态</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                <span style="margin: 0 20px;">查询时段：</span>
+                <a href="#">今天</a>
+                <a href="/order/showMyOrder?scope=1">昨天</a>
+                <a href="/order/showMyOrder?scope=30" style="color: #2ecee7">近30天</a>
+                <a href="/order/showMyOrder?scope=90">近90天</a>
+            </div>
+
+            <div class="seach_condition_accurate">
+
+                精确查询：
+                <select class="form-control" style="width: 130px">
+                    <option>商品名称：</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+                <input type="text" style="width: 170px; margin-left: 15px;" class="form-control" id="exampleInputEmail1" placeholder="">
+                <button type="button" class="btn btn-primary" style="padding: 5px 20px; margin-left: 30px">查询</button>
+
+            </div>
+        </div>
+
+        <table id="table">
+
+            <thead>
+                <th style="width: 230px;">
+                    订单号
+                </th>
+                <th style="width: 280px;">
+                    下单日期
+                </th>
+                <th style="width: 600px;">
+                    商品名称
+                </th>
+                <th style="width: 120px;">
+                    数量
+                </th>
+                <th style="width: 120px;">
+                    总购价
+                </th>
+                <th style="width: 180px;">
+                    充值账号
+                </th>
+
+                <th style="width: 150px;">
+                    订单状态
+                </th>
+                <th style="width: 150px;">
+                    订单详情
+                </th>
+            </thead>
+        <{foreach name='list' item='item'}>
+            <tr>
+                <td><{$item.oid}></td>
+                <td><{$item.place_time}></td>
+                <td style="text-align: left;padding:10px 5px;"><{$item.snap.product_name}>	</td>
+                <td>1</td>
+                <td><{$item.price}></td>
+                <td><{$item.snap.qq}></td>
+                <td>
+                    <span style="color: brown">等待处理</span>
+                </td>
+                <td>
+
+                    <a style="color: #0b6cbc;" href="javascript:">订单详情</a>
+                </td>
+
+            </tr>
+            <{/foreach}>
+            <tr>
+                <td colspan="3">本页合计</td>
+                <td><span id="size">1</span></td>
+                <td><span id="total"></span></td>
+                <td colspan="3"></td>
+            </tr>
+        </table>
+
+<span id="test">hhhhhhhhhh</span>
+    </div>
+<script>
+    var trArr =  $("#table").children().find("tr");
+    var price = 0.0
+    var size = 0
+    for (var i = 1; i < (trArr.length)-1; i++) {
+        var tdArr = trArr.eq(i).find("td")
+        price += parseFloat(tdArr.eq(4).text())
+        size += parseInt(tdArr.eq(3).text())
+    }
+    $("#size").text(size)
+    $("#total").text(parseInt(price))
+
+    $("#test").click(function () {
+        // layer.open({
+        //     type: 2,
+        //     title: 'iframe父子操作',
+        //     maxmin: false,
+        //     shadeClose: false, //点击遮罩关闭层
+        //     area : ['800px' , '520px'],
+        //     content: 'test/iframe.html'
+        // });
+        window.parent.test();
+    })
+
+
+
+</script>
+</body>
+</html>
